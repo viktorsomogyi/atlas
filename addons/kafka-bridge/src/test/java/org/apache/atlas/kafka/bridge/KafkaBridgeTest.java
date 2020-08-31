@@ -45,7 +45,7 @@ public class KafkaBridgeTest {
     private static final String TEST_TOPIC_NAME = "test_topic";
     public static final AtlasEntity.AtlasEntityWithExtInfo TOPIC_WITH_EXT_INFO = new AtlasEntity.AtlasEntityWithExtInfo(
             getTopicEntityWithGuid("0dd466a4-3838-4537-8969-6abb8b9e9185"));
-    private static final String CLUSTER_NAME = "primary";
+    private static final String CLUSTER_NAME = "cm";
     private static final String TOPIC_QUALIFIED_NAME = KafkaBridge.getTopicQualifiedName(CLUSTER_NAME, TEST_TOPIC_NAME);
 
     @BeforeMethod

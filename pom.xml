@@ -718,8 +718,8 @@
         <json.version>3.2.11</json.version>
         <jsr.version>1.1</jsr.version>
         <junit.version>4.13</junit.version>
-        <kafka.scala.binary.version>2.11</kafka.scala.binary.version>
-        <kafka.version>2.0.0</kafka.version>
+        <kafka.scala.binary.version>2.13</kafka.scala.binary.version>
+        <kafka.version>2.7.0-SNAPSHOT</kafka.version>
         <keycloak.version>6.0.1</keycloak.version>
         <log4j.version>1.2.17</log4j.version>
         <log4j2.version>2.13.3</log4j2.version>
@@ -791,6 +791,7 @@
         <module>addons/hbase-bridge-shim</module>
         <module>addons/hbase-bridge</module>
         <module>addons/hbase-testing-util</module>
+        <module>addons/kafka-bridge-shim</module>
         <module>addons/kafka-bridge</module>
         <module>tools/classification-updater</module>
         <module>tools/atlas-index-repair</module>
@@ -803,6 +804,23 @@
     </modules>
 
     <repositories>
+        <repository>
+            <id>local-repo</id>
+            <name>Local Repository</name>
+            <url>file:///Users/viktorsomogyi-vass/.m2/repository</url>
+        </repository>
+<!--        <repository>-->
+<!--            <id>cldr</id>-->
+<!--            <name>Cloudera</name>-->
+<!--            <url>https://nexus-private.hortonworks.com/nexus/content/groups/public/</url>-->
+<!--        </repository>-->
+        <repository>
+            <id>clojars</id>
+            <url>https://clojars.org/repo</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
         <repository>
             <id>central</id>
             <url>https://repo1.maven.org/maven2</url>
@@ -1565,6 +1583,12 @@
 
             <dependency>
                 <groupId>org.apache.atlas</groupId>
+                <artifactId>kafka-bridge-shim</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.atlas</groupId>
                 <artifactId>impala-hook-api</artifactId>
                 <version>${project.version}</version>
             </dependency>
@@ -2060,6 +2084,9 @@
                     <useEclipseDefaultExcludes>true</useEclipseDefaultExcludes>
                     <excludeSubProjects>true</excludeSubProjects>
                     <excludes>
+                        <exclude>**/.java-version</exclude>
+                        <exclude>**/.factorypath</exclude>
+                        <exclude>**/atlas-application.properties</exclude>
                         <exclude>**/antlr4/**</exclude>
                         <exclude>**/dependency-reduced-pom.xml</exclude>
                         <exclude>**/javax.script.ScriptEngineFactory</exclude>
@@ -2120,7 +2147,7 @@
                         <!-- atlas doc directory -->
                         <exclude>**/docz-lib/**</exclude>
                         <exclude>**/.docz/**</exclude>
-                        
+
                     </excludes>
                 </configuration>
                 <executions>

@@ -1,5 +1,4 @@
 {
-    "enumDefs": [],
     "structDefs": [],
     "classificationDefs": [],
     "entityDefs": [
@@ -167,6 +166,81 @@
             ]
         },
         {
+            "name": "kafka_producer",
+            "superTypes": [
+                "DataSet"
+            ],
+            "serviceType": "kafka",
+            "typeVersion": "1.0",
+            "attributeDefs": [
+                {
+                    "name": "clientId",
+                    "typeName": "string",
+                    "cardinality": "SINGLE",
+                    "isIndexable": true,
+                    "isOptional": false,
+                    "isInNotification": true,
+                    "isUnique": true
+                }
+            ]
+        },
+        {
+            "name" : "kafka_producer_lineage",
+            "superTypes" : [
+                "Process"
+            ],
+            "serviceType": "kafka",
+            "typeVersion" : "1.0",
+            "attributeDefs" : []
+        },
+        {
+            "name": "kafka_consumer",
+            "superTypes": [
+                "DataSet"
+            ],
+            "serviceType": "kafka",
+            "typeVersion": "1.0",
+            "attributeDefs": [
+                {
+                    "name": "clientId",
+                    "typeName": "string",
+                    "cardinality": "SINGLE",
+                    "isIndexable": true,
+                    "isOptional": false,
+                    "isInNotification": true,
+                    "isUnique": true
+                }
+            ]
+        },
+        {
+            "name" : "kafka_consumer_lineage",
+            "superTypes" : [
+                "Process"
+            ],
+            "serviceType": "kafka",
+            "typeVersion" : "1.0",
+            "attributeDefs" : []
+        },
+        {
+            "name": "kafka_consumer_group",
+            "superTypes": [
+                "DataSet"
+            ],
+            "serviceType": "kafka",
+            "typeVersion": "1.0",
+            "attributeDefs": [
+                {
+                    "name": "groupId",
+                    "typeName": "string",
+                    "cardinality": "SINGLE",
+                    "isIndexable": true,
+                    "isOptional": false,
+                    "isInNotification": true,
+                    "isUnique": true
+                }
+            ]
+        },
+        {
             "name": "jms_topic",
             "superTypes": [
                 "DataSet"
@@ -210,6 +284,101 @@
             "endDef2": {
                 "type": "avro_type",
                 "name": "kafka_topics_references",
+                "isContainer": false,
+                "cardinality": "SET"
+            },
+            "propagateTags": "NONE"
+        },
+        {
+            "name": "kafka_producer_producer_lineage_relationship",
+            "serviceType": "kafka",
+            "typeVersion": "1.0",
+            "relationshipCategory": "ASSOCIATION",
+            "endDef1": {
+                "type": "kafka_producer",
+                "name": "kafkaProducerLineage",
+                "isContainer": false,
+                "cardinality": "SINGLE"
+            },
+            "endDef2": {
+                "type": "kafka_producer_lineage",
+                "name": "kafkaProducer",
+                "isContainer": false,
+                "cardinality": "SINGLE"
+            },
+            "propagateTags": "NONE"
+        },
+        {
+            "name": "kafka_producer_lineage_topic_relationship",
+            "serviceType": "kafka",
+            "typeVersion": "1.0",
+            "relationshipCategory": "ASSOCIATION",
+            "endDef1": {
+                "type": "kafka_producer_lineage",
+                "name": "kafkaTopics",
+                "isContainer": false,
+                "cardinality": "SET"
+            },
+            "endDef2": {
+                "type": "kafka_topic",
+                "name": "kafkaProducerLineage",
+                "isContainer": false,
+                "cardinality": "SINGLE"
+            },
+            "propagateTags": "NONE"
+        },
+        {
+            "name": "kafka_consumer_consumer_lineage_relationship",
+            "serviceType": "kafka",
+            "typeVersion": "1.0",
+            "relationshipCategory": "ASSOCIATION",
+            "endDef1": {
+                "type": "kafka_consumer",
+                "name": "kafkaConsumerLineage",
+                "isContainer": false,
+                "cardinality": "SINGLE"
+            },
+            "endDef2": {
+                "type": "kafka_consumer_lineage",
+                "name": "kafkaConsumer",
+                "isContainer": false,
+                "cardinality": "SINGLE"
+            },
+            "propagateTags": "NONE"
+        },
+        {
+            "name": "kafka_consumer_lineage_topic_relationship",
+            "serviceType": "kafka",
+            "typeVersion": "1.0",
+            "relationshipCategory": "ASSOCIATION",
+            "endDef1": {
+                "type": "kafka_consumer_lineage",
+                "name": "kafkaTopics",
+                "isContainer": false,
+                "cardinality": "SET"
+            },
+            "endDef2": {
+                "type": "kafka_topic",
+                "name": "kafkaConsumerLineage",
+                "isContainer": false,
+                "cardinality": "SINGLE"
+            },
+            "propagateTags": "NONE"
+        },
+        {
+            "name": "kafka_consumer_consumer_group_relationship",
+            "serviceType": "kafka",
+            "typeVersion": "1.0",
+            "relationshipCategory": "ASSOCIATION",
+            "endDef1": {
+                "type": "kafka_consumer",
+                "name": "kafkaConsumerGroups",
+                "isContainer": false,
+                "cardinality": "SET"
+            },
+            "endDef2": {
+                "type": "kafka_consumer_group",
+                "name": "kafkaConsumers",
                 "isContainer": false,
                 "cardinality": "SET"
             },

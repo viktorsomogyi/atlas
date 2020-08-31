@@ -17,7 +17,8 @@
   ~ limitations under the License.
   -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <artifactId>apache-atlas</artifactId>
@@ -29,15 +30,36 @@
     <description>Apache Atlas Kafka Bridge Module</description>
     <name>Apache Atlas Kafka Bridge</name>
     <packaging>jar</packaging>
+
+    <properties>
+        <caffeine.version>2.8.0</caffeine.version>
+        <htrace-core4.version>4.1.0-incubating</htrace-core4.version>
+        <logredactor.version>2.0.8</logredactor.version>
+        <stax2-api.version>3.1.4</stax2-api.version>
+        <woodstox-core.version>5.0.3</woodstox-core.version>
+        <woodstox-core-asl.version>4.4.1</woodstox-core-asl.version>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>org.apache.atlas</groupId>
-            <artifactId>atlas-client-v1</artifactId>
+            <artifactId>atlas-client-v2</artifactId>
         </dependency>
 
         <dependency>
             <groupId>org.apache.atlas</groupId>
-            <artifactId>atlas-client-v2</artifactId>
+            <artifactId>atlas-notification</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.atlas</groupId>
+            <artifactId>kafka-bridge-shim</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.github.ben-manes.caffeine</groupId>
+            <artifactId>caffeine</artifactId>
+            <version>${caffeine.version}</version>
         </dependency>
 
         <!-- to bring up atlas server for integration tests -->
@@ -102,6 +124,46 @@
             <version>${httpcomponents-httpcore.version}</version>
         </dependency>
 
+        <!-- the kafka server artifact is included because org.apache.kafka.streams.integration.utils.EmbeddedKafkaCluster uses it -->
+        <dependency>
+            <groupId>org.apache.kafka</groupId>
+            <artifactId>kafka_${kafka.scala.binary.version}</artifactId>
+            <version>${kafka.version}</version>
+            <classifier>test</classifier>
+            <scope>test</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.glassfish.jersey.core</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.kafka</groupId>
+            <artifactId>kafka-streams</artifactId>
+            <version>${kafka.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.kafka</groupId>
+            <artifactId>kafka-streams</artifactId>
+            <version>${kafka.version}</version>
+            <classifier>test</classifier>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.kafka</groupId>
+            <artifactId>kafka-clients</artifactId>
+            <version>${kafka.version}</version>
+            <classifier>test</classifier>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.hamcrest</groupId>
+            <artifactId>hamcrest</artifactId>
+            <version>2.2</version>
+            <scope>test</scope>
+        </dependency>
         <dependency>
             <groupId>org.eclipse.jetty</groupId>
             <artifactId>jetty-webapp</artifactId>
@@ -117,7 +179,7 @@
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
-            <version>12.0.1</version>
+            <version>${guava.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.hadoop</groupId>
@@ -191,9 +253,44 @@
                                             <version>${project.version}</version>
                                         </artifactItem>
                                         <artifactItem>
-                                            <groupId>org.apache.kafka</groupId>
-                                            <artifactId>kafka-clients</artifactId>
-                                            <version>${kafka.version}</version>
+                                            <groupId>${project.groupId}</groupId>
+                                            <artifactId>atlas-notification</artifactId>
+                                            <version>${project.version}</version>
+                                        </artifactItem>
+                                        <artifactItem>
+                                            <groupId>org.apache.logging.log4j</groupId>
+                                            <artifactId>log4j-core</artifactId>
+                                            <version>${log4j2.version}</version>
+                                        </artifactItem>
+                                        <artifactItem>
+                                            <groupId>org.apache.logging.log4j</groupId>
+                                            <artifactId>log4j-api</artifactId>
+                                            <version>${log4j2.version}</version>
+                                        </artifactItem>
+                                        <artifactItem>
+                                            <groupId>commons-configuration</groupId>
+                                            <artifactId>commons-configuration</artifactId>
+                                            <version>${commons-conf.version}</version>
+                                        </artifactItem>
+<!--                                        <artifactItem>-->
+<!--                                            <groupId>org.apache.commons</groupId>-->
+<!--                                            <artifactId>commons-configuration2</artifactId>-->
+<!--                                            <version>${commons-configuration2.version}</version>-->
+<!--                                        </artifactItem>-->
+                                        <artifactItem>
+                                            <groupId>commons-lang</groupId>
+                                            <artifactId>commons-lang</artifactId>
+                                            <version>${commons-lang.version}</version>
+                                        </artifactItem>
+                                        <artifactItem>
+                                            <groupId>commons-logging</groupId>
+                                            <artifactId>commons-logging</artifactId>
+                                            <version>${commons-logging.version}</version>
+                                        </artifactItem>
+                                        <artifactItem>
+                                            <groupId>com.sun.jersey</groupId>
+                                            <artifactId>jersey-bundle</artifactId>
+                                            <version>${jersey.version}</version>
                                         </artifactItem>
                                         <artifactItem>
                                             <groupId>com.sun.jersey.contribs</groupId>
@@ -201,9 +298,114 @@
                                             <version>${jersey.version}</version>
                                         </artifactItem>
                                         <artifactItem>
-                                            <groupId>commons-configuration</groupId>
-                                            <artifactId>commons-configuration</artifactId>
-                                            <version>${commons-conf.version}</version>
+                                            <groupId>com.sun.jersey</groupId>
+                                            <artifactId>jersey-json</artifactId>
+                                            <version>${jersey.version}</version>
+                                        </artifactItem>
+                                        <artifactItem>
+                                            <groupId>com.fasterxml.jackson.core</groupId>
+                                            <artifactId>jackson-databind</artifactId>
+                                            <version>${jackson.databind.version}</version>
+                                        </artifactItem>
+                                        <artifactItem>
+                                            <groupId>com.fasterxml.jackson.core</groupId>
+                                            <artifactId>jackson-core</artifactId>
+                                            <version>${jackson.version}</version>
+                                        </artifactItem>
+                                        <artifactItem>
+                                            <groupId>com.fasterxml.jackson.core</groupId>
+                                            <artifactId>jackson-annotations</artifactId>
+                                            <version>${jackson.version}</version>
+                                        </artifactItem>
+                                        <dependency>
+                                            <groupId>com.fasterxml.jackson.jaxrs</groupId>
+                                            <artifactId>jackson-jaxrs-base</artifactId>
+                                            <version>${jackson.version}</version>
+                                        </dependency>
+                                        <dependency>
+                                            <groupId>com.fasterxml.jackson.jaxrs</groupId>
+                                            <artifactId>jackson-jaxrs-json-provider</artifactId>
+                                            <version>${jackson.version}</version>
+                                        </dependency>
+                                        <artifactItem>
+                                            <groupId>javax.ws.rs</groupId>
+                                            <artifactId>jsr311-api</artifactId>
+                                            <version>${jsr.version}</version>
+                                        </artifactItem>
+                                        <artifactItem>
+                                            <groupId>org.apache.hadoop</groupId>
+                                            <artifactId>hadoop-auth</artifactId>
+                                            <version>${hadoop.version}</version>
+                                        </artifactItem>
+                                        <artifactItem>
+                                            <groupId>org.apache.hadoop</groupId>
+                                            <artifactId>hadoop-common</artifactId>
+                                            <version>${hadoop.version}</version>
+                                        </artifactItem>
+                                        <artifactItem>
+                                            <groupId>org.apache.logging.log4j</groupId>
+                                            <artifactId>log4j-core</artifactId>
+                                            <version>${log4j2.version}</version>
+                                        </artifactItem>
+                                        <artifactItem>
+                                            <groupId>org.apache.logging.log4j</groupId>
+                                            <artifactId>log4j-api</artifactId>
+                                            <version>${log4j2.version}</version>
+                                        </artifactItem>
+                                        <artifactItem>
+                                            <groupId>org.cloudera.logredactor</groupId>
+                                            <artifactId>logredactor</artifactId>
+                                            <version>${logredactor.version}</version>
+                                        </artifactItem>
+                                        <artifactItem>
+                                            <groupId>org.codehaus.woodstox</groupId>
+                                            <artifactId>stax2-api</artifactId>
+                                            <version>${stax2-api.version}</version>
+                                        </artifactItem>
+                                        <artifactItem>
+                                            <groupId>com.fasterxml.woodstox</groupId>
+                                            <artifactId>woodstox-core</artifactId>
+                                            <version>${woodstox-core.version}</version>
+                                        </artifactItem>
+                                        <artifactItem>
+                                            <groupId>org.codehaus.woodstox</groupId>
+                                            <artifactId>woodstox-core-asl</artifactId>
+                                            <version>${woodstox-core-asl.version}</version>
+                                        </artifactItem>
+                                        <artifactItem>
+                                            <groupId>org.apache.htrace</groupId>
+                                            <artifactId>htrace-core4</artifactId>
+                                            <version>${htrace-core4.version}</version>
+                                        </artifactItem>
+                                        <artifactItem>
+                                            <groupId>com.google.guava</groupId>
+                                            <artifactId>guava</artifactId>
+                                            <version>${guava.version}</version>
+                                        </artifactItem>
+                                    </artifactItems>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>copy-hook-shim</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>copy</goal>
+                                </goals>
+                                <configuration>
+                                    <outputDirectory>${project.build.directory}/dependency/hook/kafka</outputDirectory>
+                                    <overWriteReleases>false</overWriteReleases>
+                                    <overWriteSnapshots>false</overWriteSnapshots>
+                                    <overWriteIfNewer>true</overWriteIfNewer>
+                                    <artifactItems>
+                                        <artifactItem>
+                                            <groupId>${project.groupId}</groupId>
+                                            <artifactId>kafka-bridge-shim</artifactId>
+                                            <version>${project.version}</version>
+                                        </artifactItem>
+                                        <artifactItem>
+                                            <groupId>${project.groupId}</groupId>
+                                            <artifactId>atlas-plugin-classloader</artifactId>
+                                            <version>${project.version}</version>
                                         </artifactItem>
                                     </artifactItems>
                                 </configuration>
@@ -376,12 +578,6 @@
                             </resources>
                         </configuration>
                     </execution>
-                </executions>
-            </plugin>
-
-            <plugin>
-                <artifactId>maven-resources-plugin</artifactId>
-                <executions>
                     <execution>
                         <id>copy-solr-resources</id>
                         <phase>validate</phase>
