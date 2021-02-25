@@ -38,6 +38,7 @@
         <stax2-api.version>3.1.4</stax2-api.version>
         <woodstox-core.version>5.0.3</woodstox-core.version>
         <woodstox-core-asl.version>4.4.1</woodstox-core-asl.version>
+        <commons-configuration2.version>2.7</commons-configuration2.version>
     </properties>
 
     <dependencies>
@@ -268,15 +269,20 @@
                                             <version>${log4j2.version}</version>
                                         </artifactItem>
                                         <artifactItem>
+                                            <groupId>commons-collections</groupId>
+                                            <artifactId>commons-collections</artifactId>
+                                            <version>${commons-collections.version}</version>
+                                        </artifactItem>
+                                        <artifactItem>
                                             <groupId>commons-configuration</groupId>
                                             <artifactId>commons-configuration</artifactId>
                                             <version>${commons-conf.version}</version>
                                         </artifactItem>
-<!--                                        <artifactItem>-->
-<!--                                            <groupId>org.apache.commons</groupId>-->
-<!--                                            <artifactId>commons-configuration2</artifactId>-->
-<!--                                            <version>${commons-configuration2.version}</version>-->
-<!--                                        </artifactItem>-->
+                                        <artifactItem>
+                                            <groupId>org.apache.commons</groupId>
+                                            <artifactId>commons-configuration2</artifactId>
+                                            <version>${commons-configuration2.version}</version>
+                                        </artifactItem>
                                         <artifactItem>
                                             <groupId>commons-lang</groupId>
                                             <artifactId>commons-lang</artifactId>

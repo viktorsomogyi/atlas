@@ -55,7 +55,7 @@ import java.util.stream.Stream;
  */
 public class KafkaHookImpl implements Auditor {
 
-    private static final String AUDITORS_CONFIG_PREFIX = "cloudera.auditors.";
+    private static final String AUDITORS_CONFIG_PREFIX = "auditors.";
     private static final String ATLAS_CONFIG_PREFIX = "atlas.";
     private static final String HOOK_CONNECTOR_CONFIG = "hook.connector";
     private static final String REST_CONNECTOR_CONFIG = "rest";
@@ -75,7 +75,7 @@ public class KafkaHookImpl implements Auditor {
     /**
      * The plugin is instantiated with this constructor by org.apache.atlas.kafka.hook.KafkaHook through reflection.
      */
-    private KafkaHookImpl() {
+    public KafkaHookImpl() {
         asyncTaskExecutor = Executors.newSingleThreadExecutor(r -> {
             Thread thread = new Thread(r);
             thread.setName("KafkaHookImpl_worker");

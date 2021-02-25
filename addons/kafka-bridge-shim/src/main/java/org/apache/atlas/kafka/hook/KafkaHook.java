@@ -72,7 +72,7 @@ public class KafkaHook implements Auditor {
 
             activatePluginClassLoader();
 
-            atlasPluginImpl = cls.newInstance();
+            atlasPluginImpl = cls.getConstructor().newInstance();
             atlasPluginImpl.configure(configs);
         } catch (Throwable excp) {
             throw new RuntimeException("Error instantiating Atlas plugin implementation", excp);
